@@ -3,7 +3,6 @@ import { db } from "@/db";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
-import { setTimeout } from "timers/promises";
 
 interface SnippetShowPage {
   params: {
@@ -47,3 +46,13 @@ const SnippetShowPage = async (props: SnippetShowPage) => {
 };
 
 export default SnippetShowPage;
+
+export async function generateStaticParams() {
+  const snippets = await db.snippet.findMany();
+
+  return snippets.map((snippet) => {
+    return {
+      id: snippet.id.toString(),
+    };
+  });
+}
